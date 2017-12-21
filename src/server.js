@@ -19,6 +19,11 @@ app.use((req, res, next) => {
   next();
 });
 
+app.get('/story/:id', function (req, res) {
+  console.log("Returning story", )
+
+}
+
 
 /**
  * --- Your custom code END ---
@@ -32,7 +37,7 @@ const serverPort = process.env.PORT || _.get(Config, "server.port", 3000);
 server.listen(serverPort, "0.0.0.0", function(err) {
   if (err) throw err;
   const addr = server.address();
-  
+
   // eslint-disable-next-line
   console.log("Listening at http://%s:%d", addr.address, addr.port);
 });
