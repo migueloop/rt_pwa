@@ -1,7 +1,7 @@
 import express from "express";
 import path from "path";
-import mds from "markdown-serve";
 import _ from "lodash";
+import fs from "fs"
 import http from "http";
 import serverMiddleware from "pawjs/src/server/middleware";
 import Config from "./config";
@@ -15,12 +15,62 @@ const app = express();
 
 app.set('view', path.join(__dirname, 'server/templates/'));
 app.set('view engine', 'jade');
- 
 
-app.use(mds.middleware({ 
-  rootDirectory: path.resolve(__dirname, 'server/rels/'),
-  view: 'markdown'
-}));
+app.get("/test", (req,res,next) => {
+  console.log("entra")
+  return 'ok'
+});
+
+app.get("/api/story/:id", (req,res,next) => {
+  var marked = require('marked');
+  marked.setOptions({
+    renderer: new marked.Renderer(),
+    gfm: true,
+    tables: true,
+    breaks: false,
+    pedantic: false,
+    sanitize: false,
+    smartLists: true,
+    smartypants: false
+  });
+
+  var filePath = path.join(__dirname, 'server/rels/');
+  fs.readFile(filePath + req.params.id + '.md', {encoding: 'utf-8'}, function(err,data){
+    if (!err) {
+        res.json({html_content : marked(data)});
+    } else {
+        console.log(err);
+    }
+  });
+});
+
+
+app.get("/api/story", (req,res,next) => {
+  var marked = require('marked');
+  marked.setOptions({
+    renderer: new marked.Renderer(),
+    gfm: true,
+    tables: true,
+    breaks: false,
+    pedantic: false,
+    sanitize: false,
+    smartLists: true,
+    smartypants: false
+  });
+
+  var filePath = path.join(__dirname, 'server/rels/');
+  
+  fs.readdir(filePath, (err, files) => {
+    let json_res = []
+    files.forEach(file => {
+      json_res.push(  { 'title': file.slice(0, -3) } )
+    });
+    res.json({'stories': json_res})
+  })
+});
+
+
+
  
 app.use((req, res, next) => {
   res.locals.reduxInitialState = {

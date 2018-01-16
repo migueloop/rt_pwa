@@ -19,6 +19,6 @@ Some random points:
 
 # This is the boss yo! 
 
-Hello, how r u? this is the test page nen
+Hello, how r u?jalajla
 
 Testing some html & characters **bam**
