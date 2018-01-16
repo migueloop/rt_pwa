@@ -12,12 +12,14 @@ export default class StoryListing extends React.Component {
             console.log(story)
             const title = _.get(story, "title", 0);
             return (
-              <div key={title} className="media">
-                <div className="media-body">
+              <div key={title} className="card mb-3">
+                <div className="card-header">
                   <h5 className="mt-0">
                     <Link to={`/story/${title}`} dangerouslySetInnerHTML={{ __html: title }} />
                   </h5>
-                  <p dangerouslySetInnerHTML={{ __html:_.get(story, "excerpt.rendered") }} />
+                </div>
+                <div className="card-body">
+                  <p dangerouslySetInnerHTML={{ __html:_.get(story, "excerpt.rendered") }} />              
                 </div>
               </div>
             );
